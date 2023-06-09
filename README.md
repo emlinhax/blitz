@@ -16,7 +16,8 @@ if you do replace the algorithm, make sure to use inlining (or a macro).
 
 # anti reverse engineering
 wondering what i meant by "make life for reverse engineer a little more difficult" ?
-
+  \
+  \
 original function:
 ```cpp
 void run()
@@ -25,8 +26,7 @@ void run()
     Beep(1000, 1000);
 }
 ```
-  
-  
+  \
 IDA's generated pseudocode:
 ```cpp
 void run(void)
