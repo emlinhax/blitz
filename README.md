@@ -31,12 +31,12 @@ void run()
   \
 IDA's generated pseudocode:
 ```cpp
-void run(void)
+__int64 sub_140001000()
 {
-  void (__fastcall *v0)(__int64); // r14
-  _LIST_ENTRY *p_InMemoryOrderModuleList; // rbx
-  _LIST_ENTRY *Flink; // r11
-  _LIST_ENTRY *v3; // rdx
+  __int64 (__fastcall *v0)(__int64); // r14
+  struct _LIST_ENTRY *p_InMemoryOrderModuleList; // rbx
+  struct _LIST_ENTRY *Flink; // r11
+  struct _LIST_ENTRY *v3; // rdx
   unsigned __int64 v4; // rax
   unsigned __int16 v5; // cx
   char v6; // al
@@ -46,7 +46,7 @@ void run(void)
   __int64 v10; // rax
   __int64 v11; // r10
   __int64 v12; // rcx
-  _LIST_ENTRY *v13; // rbx
+  struct _LIST_ENTRY *v13; // rbx
   int v14; // r11d
   _DWORD *v15; // rbp
   unsigned int v16; // edi
@@ -55,7 +55,7 @@ void run(void)
   char *v19; // r9
   __int64 v20; // r10
   __int64 v21; // rcx
-  char v22[128]; // [rsp+110h] [rbp-A8h] BYREF
+  char v23[128]; // [rsp+110h] [rbp-A8h] BYREF
 
   v0 = 0i64;
   p_InMemoryOrderModuleList = &NtCurrentPeb()->Ldr->InMemoryOrderModuleList;
@@ -78,18 +78,18 @@ LABEL_20:
           break;
         if ( v5 <= 0x7Fu )
         {
-          v22[v4++] = v5;
+          v23[v4++] = v5;
           if ( v4 < 0x80 )
             continue;
         }
         goto LABEL_8;
       }
-      v22[v4] = 0;
+      v23[v4] = 0;
 LABEL_8:
-      v6 = v22[0];
-      if ( v22[0] )
+      v6 = v23[0];
+      if ( v23[0] )
       {
-        v7 = v22;
+        v7 = v23;
         do
         {
           if ( (unsigned __int8)(v6 - 65) <= 0x19u )
@@ -98,19 +98,19 @@ LABEL_8:
         }
         while ( v6 );
       }
-      v8 = v22;
+      v8 = v23;
       v9 = -1;
       v10 = -1i64;
       do
         ++v10;
-      while ( v22[v10] );
+      while ( v23[v10] );
       if ( (_DWORD)v10 )
       {
         v11 = (unsigned int)v10;
         do
         {
           v12 = (unsigned int)*v8++;
-          v9 = crc::table[v12 ^ (unsigned __int8)v9] ^ (v9 >> 8);
+          v9 = dword_140003260[v12 ^ (unsigned __int8)v9] ^ (v9 >> 8);
           --v11;
         }
         while ( v11 );
@@ -142,7 +142,7 @@ LABEL_8:
         do
         {
           v21 = (unsigned int)*v19++;
-          v17 = crc::table[v21 ^ (unsigned __int8)v17] ^ (v17 >> 8);
+          v17 = dword_140003260[v21 ^ (unsigned __int8)v17] ^ (v17 >> 8);
           --v20;
         }
         while ( v20 );
@@ -150,18 +150,17 @@ LABEL_8:
           break;
       }
       if ( ++v14 >= v16 )
-        goto LABEL_32;
+        return v0(1000i64);
     }
-    v0 = (void (__fastcall *)(__int64))((char *)v13
-                                      + *(unsigned int *)((char *)&v13->Flink
-                                                        + 4
-                                                        * *(unsigned __int16 *)((char *)&v13->Flink
-                                                                              + 2 * v14
-                                                                              + (unsigned int)v15[9])
-                                                        + (unsigned int)v15[7]));
+    v0 = (__int64 (__fastcall *)(__int64))((char *)v13
+                                         + *(unsigned int *)((char *)&v13->Flink
+                                                           + 4
+                                                           * *(unsigned __int16 *)((char *)&v13->Flink
+                                                                                 + 2 * v14
+                                                                                 + (unsigned int)v15[9])
+                                                           + (unsigned int)v15[7]));
   }
-LABEL_32:
-  v0(1000i64);
+  return v0(1000i64);
 }
 ```
 
