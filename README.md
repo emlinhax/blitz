@@ -6,11 +6,13 @@ a header-only library to dynamically resolve modules and exports while also bein
 2. it is a great way to make a reverse engineer's life a little more difficult. examples of that can be seen below.
 
 # features
-1. absolutely no strings are stored in the resulting binary which makes static analysis much more difficult.
-2. it generates pretty messy and confusing assembly/pseudocode which is a good thing because this library's focus is obfuscation, not speed.
+1. absolutely no strings are stored in the resulting binary, which makes static analysis much more difficult.
+2. it generates pretty messy and confusing assembly/pseudocode, which is a good thing because this library's focus is obfuscation, not speed.
 3. even dynamic analysis is difficult because this library does not use any winapi functions (or anything that could be hooked or monitored).
 
 it is recommended to use this library in combination with a real obfuscator.
+the hashing algorithm can be replaced with any other algorithm.
+if you do replace the algorithm, make sure to use inlining (or a macro).
 
 # anti reverse engineering
 wondering what i meant by "make life for reverse engineer a little more difficult" ?
@@ -160,3 +162,7 @@ LABEL_32:
   v0(1000i64);
 }
 ```
+
+
+
+Inspiration: https://github.com/JustasMasiulis/lazy_importer
