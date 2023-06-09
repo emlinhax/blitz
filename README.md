@@ -5,6 +5,7 @@ a header-only library to dynamically resolve modules and exports while also bein
 1. this library makes it easy to dynamically import functions that are not provided in the standard windows sdk thanks to the macros.
 2. it is a great way to make a reverse engineer's life a little more difficult. examples of that can be seen below.
 
+
 # features
 1. absolutely no strings are stored in the resulting binary, which makes static analysis much more difficult.
 2. it generates pretty messy and confusing assembly/pseudocode, which is a good thing because this library's focus is obfuscation, not speed.
@@ -13,6 +14,7 @@ a header-only library to dynamically resolve modules and exports while also bein
 it is recommended to use this library in combination with a real obfuscator.
 the hashing algorithm can be replaced with any other algorithm.
 if you do replace the algorithm, make sure to use inlining (or a macro).
+
 
 # anti reverse engineering
 wondering what i meant by "make life for reverse engineer a little more difficult" ?
