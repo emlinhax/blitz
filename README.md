@@ -24,8 +24,8 @@ void run()
     BLITZ_FUNC("kernel32.dll", Beep, void(*)(DWORD, DWORD));
     Beep(1000, 1000);
 }
-```
-\
+```\
+
 
 IDA's generated pseudocode:
 ```cpp
