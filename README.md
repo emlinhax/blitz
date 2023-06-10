@@ -2,7 +2,7 @@
 a header-only library to dynamically resolve modules and exports while also being able to call them directly
 
 # why would i use this?
-1. this library makes it easy to dynamically import functions that are not provided in the standard windows sdk thanks to the macros.
+1. this library makes it easy to dynamically import winapi functions aswell as function that are not provided in the standard windows sdk thanks to the macros.
 2. it is a great way to make a reverse engineer's life a little more difficult. examples of that can be seen below.
 
 
