@@ -8,16 +8,16 @@
 #include <type_traits>
 
 typedef unsigned char byte;
-typedef unsigned short i16;
-typedef unsigned long i32;
-typedef unsigned __int64 i64;
+typedef unsigned short u16;
+typedef unsigned long u32;
+typedef unsigned __int64 u64;
 
 #ifndef COMPILE_TIME_CRC_H
 #define COMPILE_TIME_CRC_H
 
 namespace crc
 {
-    static constexpr const i32 table[256] =
+    static constexpr const u32 table[256] =
     {
         0x00000000U, 0x77073096U, 0xEE0E612CU, 0x990951BAU, 0x076DC419U,
         0x706AF48FU, 0xE963A535U, 0x9E6495A3U, 0x0EDB8832U, 0x79DCB8A4U,
@@ -73,10 +73,10 @@ namespace crc
         0x2D02EF8DU
     };
 
-    constexpr i32 compute(const char* data, i32 len, i32 crc = 0)
+    __forceinline constexpr u32 compute(const char* data, u32 len, u32 crc = 0)
     {
         crc = crc ^ 0xFFFFFFFFU;
-        for (i32 i = 0; i < len; i++)
+        for (u32 i = 0; i < len; i++)
         {
             crc = table[*data ^ (crc & 0xFF)] ^ (crc >> 8);
             data++;
@@ -86,10 +86,10 @@ namespace crc
     }
 }
 
-#define crc32(A) std::integral_constant<i32, crc::compute(A, sizeof(A)-1)>::value
+#define crc32(A) std::integral_constant<u32, crc::compute(A, sizeof(A)-1)>::value
 #endif 
 
-bool streq(char* a1, char* a2)
+__forceinline bool streq(char* a1, char* a2)
 {
     while (*a1) {
         if (*a1 == *a2) { a1++; a2++; }
@@ -98,14 +98,14 @@ bool streq(char* a1, char* a2)
     return true;
 }
 
-char* tolower(char* str) {
+__forceinline char* tolower(char* str) {
     for (int i = 0; str[i]; i++) {
         if (str[i] >= 'A' && str[i] <= 'Z') str[i] += 32;
     }
     return str;
 }
 
-size_t _wcstombs(char* mbstr, const wchar_t* wcstr, size_t count) {
+__forceinline size_t _wcstombs(char* mbstr, const wchar_t* wcstr, size_t count) {
     size_t i;
     for (i = 0; i < count && wcstr[i] != L'\0'; ++i) {
         if (wcstr[i] > 127) return -1;
@@ -117,7 +117,7 @@ size_t _wcstombs(char* mbstr, const wchar_t* wcstr, size_t count) {
 
 namespace blitz {
 
-    __forceinline i64 resolve_module(i64 crc)
+    __forceinline u64 resolve_module(u64 crc)
     {
         PPEB ppeb = (PPEB)__readgsqword(0x60);
         PPEB_LDR_DATA ldr = ppeb->Ldr;
@@ -128,12 +128,12 @@ namespace blitz {
             char entry_dllname[128];
             _wcstombs(entry_dllname, dll_base_name->Buffer, 128);
             if (crc::compute(tolower((char*)entry_dllname), strlen(entry_dllname)) == crc)
-                return (i64)entry->DllBase;
+                return (u64)entry->DllBase;
         }
         return 0;
     }
 
-    __forceinline i64 resolve_export(i64 moduleptr, i64 crc)
+    __forceinline u64 resolve_export(u64 moduleptr, u64 crc)
     {
         IMAGE_DOS_HEADER* dos_header = reinterpret_cast<IMAGE_DOS_HEADER*>(moduleptr);
         IMAGE_NT_HEADERS* nt_header = reinterpret_cast<IMAGE_NT_HEADERS*>(moduleptr + dos_header->e_lfanew);
@@ -141,11 +141,11 @@ namespace blitz {
 
         for (int i = 0; i < export_directory->NumberOfFunctions; ++i)
         {
-            char* function_name = (char*)moduleptr + *(i32*)(moduleptr + (export_directory->AddressOfNames + (4 * i)));
+            char* function_name = (char*)moduleptr + *(u32*)(moduleptr + (export_directory->AddressOfNames + (4 * i)));
             if (crc::compute(function_name, strlen(function_name)) == crc)
             {
-                i16* address_of_ordinals = (i16*)(moduleptr + export_directory->AddressOfNameOrdinals);
-                i32* address_of_functions = (i32*)(moduleptr + export_directory->AddressOfFunctions);
+                u16* address_of_ordinals = (u16*)(moduleptr + export_directory->AddressOfNameOrdinals);
+                u32* address_of_functions = (u32*)(moduleptr + export_directory->AddressOfFunctions);
                 return moduleptr + address_of_functions[address_of_ordinals[i]];
             }
         }
